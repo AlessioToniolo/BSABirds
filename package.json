@@ -2,6 +2,7 @@
 	"name": "bsabirds",
 	"version": "0.0.1",
 	"scripts": {
+		"start": "node build/index.js",
 		"dev": "svelte-kit dev",
 		"build": "svelte-kit build",
 		"package": "svelte-kit package",
@@ -14,6 +15,7 @@
 	"devDependencies": {
 		"@playwright/test": "^1.20.0",
 		"@sveltejs/adapter-auto": "next",
+		"@sveltejs/adapter-node": "^1.0.0-next.73",
 		"@sveltejs/kit": "next",
 		"autoprefixer": "^10.4.2",
 		"daisyui": "^2.13.6",
