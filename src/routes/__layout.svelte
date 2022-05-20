@@ -92,7 +92,7 @@
 		>
 			<div class="items-center grid-flow-col">
 				<p class="text-lg">
-					Created for an Eagle Scout Project by <a
+					An Eagle Scout Project by <a
 						class="underline hover:text-primary"
 						href="https://github.com/AlessioToniolo">Alessio Toniolo</a
 					>
