@@ -30,9 +30,9 @@
 						tabindex="0"
 						class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52 text-base-content"
 					>
-						<li><a>Item 1</a></li>
+						<li><a href="https://google.com">Item 1</a></li>
 						<li tabindex="0">
-							<a class="justify-between">
+							<a href="https://google.com" class="justify-between">
 								Parent
 								<svg
 									class="fill-current"
@@ -46,22 +46,22 @@
 								</svg></a
 							>
 							<ul class="p-2">
-								<li><a>Submenu 1</a></li>
-								<li><a>Submenu 2</a></li>
+								<li><a href="https://google.com">Submenu 1</a></li>
+								<li><a href="https://google.com">Submenu 2</a></li>
 							</ul>
 						</li>
-						<li><a>Item 3</a></li>
+						<li><a href="https://google.com">Item 3</a></li>
 					</ul>
 				</div>
-				<a class="btn btn-ghost normal-case text-xl">BSABirds</a>
+				<a href="https://google.com" class="btn btn-ghost normal-case text-xl">BSABirds</a>
 				<!--<Fa icon={faDove} class="" />
 					-->
 			</div>
 			<div class="navbar-center hidden lg:flex">
 				<ul class="menu menu-horizontal p-0">
-					<li><a>Item 1</a></li>
+					<li><a href="https://google.com">Item 1</a></li>
 					<li tabindex="0">
-						<a>
+						<a href="https://google.com">
 							Parent
 							<svg
 								class="fill-current"
@@ -77,11 +77,11 @@
 							<li><a>Submenu 2</a></li>
 						</ul>
 					</li>
-					<li><a>Item 3</a></li>
+					<li><a href="https://google.com">Item 3</a></li>
 				</ul>
 			</div>
 			<div class="navbar-end">
-				<a class="btn btn-primary">Get started</a>
+				<a href="https://google.com" class="btn btn-primary">Get started</a>
 			</div>
 		</div>
 

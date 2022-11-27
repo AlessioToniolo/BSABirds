@@ -11,7 +11,15 @@ const config = {
 		preprocess({
 			postcss: true
 		})
-	]
+	],
+
+	// TODO: remove this block if you want warning messages
+	onwarn: (warning, handler) => {
+		if (warning.code.startsWith('a11y-')) {
+		  return;
+		}
+		handler(warning);
+	  },
 };
 
 export default config;
