@@ -1,5 +1,5 @@
 <script>
-	import Layout from './+__layout.svelte';
+	import Layout from './__layout.svelte';
 </script>
 
 <div class="container mx-auto min-width-max flex justify-center">

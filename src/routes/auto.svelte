@@ -1,5 +1,6 @@
 <script>
 	import papaparse from 'papaparse';
+	import * as tf from '@tensorflow/tfjs';
 
 	let showCamera = true;
 	let showDetection = false;
@@ -7,13 +8,16 @@
 	let showPredictButton = false;
 	let showVideoSource = false;
 	let showCanvasSource = false;
-
-	// TODO: machine learning section
-	import * as tf from '@tensorflow/tfjs';
-
+	let showResult = false;
+	let error;
 	let videoSource = null;
 	let loading = false;
 	let secondLoading = false;
+	let image;
+	let imageCanvas;
+	let model = undefined;
+	let prediction;
+	let accuracy;
 
 	const obtainVideoCamera = async () => {
 		showVideoSource = true;
@@ -32,15 +36,10 @@
 		}
 	};
 
-	let image;
-	let imageCanvas;
-	//let container;
-	// Webcam promise return
 	async function loadImage() {
 		showCanvasSource = true;
 		loading = true;
 		const camera = await tf.data.webcam(videoSource);
-		// Image camera capture promise return.
 		image = await camera.capture();
 		showTakePictureButton = false;
 		showCamera = false;
@@ -51,12 +50,6 @@
 		showPredictButton = true;
 	}
 
-	// Load and process model
-	let model = undefined;
-	let prediction;
-	let accuracy;
-
-	// TODO test code
 	async function predictWebcam() {
 		showPredictButton = false;
 		secondLoading = true;
@@ -64,7 +57,7 @@
 			model = loadedModel;
 			model.summary();
 			const predictionData = model.predict(image);
-			const predictionArray = predictionData.data().then((arr) => {
+			predictionData.data().then((arr) => {
 				let max = arr[0];
 				let maxIndex = 0;
 				for (let i = 0; i < arr.length; i++) {
@@ -84,6 +77,33 @@
 				showDetection = true;
 			});
 		});
+	}
+
+	async function logData() {
+		const response = await fetch('/auto', {
+			method: 'POST',
+			body: prediction,
+			headers: {
+				'content-type': 'text/plain',
+				accept: 'text/plain'
+			}
+		}).then((res) => {
+			console.log(res.json());
+		});
+
+		clearScreen();
+		showResult = true;
+		error = response;
+	}
+
+	// Helper function
+	function clearScreen() {
+		showDetection = false;
+		showCamera = false;
+		showVideoSource = false;
+		showCanvasSource = false;
+		showTakePictureButton = false;
+		showPredictButton = false;
 	}
 </script>
 
@@ -125,7 +145,7 @@
 			<button class="btn mt-2" on:click={loadImage}>Take a picture</button>
 		{/if}
 		{#if showPredictButton}
-			<button class="btn mt-2" on:click={predictWebcam}>Predict Bird</button>
+			<button class="btn btn-primary mt-2" on:click={predictWebcam}>Predict Bird</button>
 		{/if}
 		{#if secondLoading}
 			<div class="mt-12 alert alert-warning shadow-lg">
@@ -142,7 +162,7 @@
 					<h2 class="card-title">Bird Species:</h2>
 					<p><b>{prediction}</b> with {accuracy}% certainty!</p>
 					<div class="mt-2 space-x-1 card-actions justify-end">
-						<button class="btn btn-primary">Log Bird</button>
+						<button on:click={logData} class="btn btn-primary">Log Bird</button>
 						<a href="/">
 							<button class="btn btn-neutral">Try Again</button>
 						</a>
@@ -150,5 +170,44 @@
 				</div>
 			</div>
 		</div>
+	{/if}
+	{#if showResult}
+		{#if error}
+			<div class="alert alert-error shadow-lg">
+				<div>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						class="stroke-current flex-shrink-0 h-6 w-6"
+						fill="none"
+						viewBox="0 0 24 24"
+						><path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+						/></svg
+					>
+					<span>Error! Something went wrong...</span>
+				</div>
+			</div>
+		{:else}
+			<div class="alert alert-success shadow-lg">
+				<div>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						class="stroke-current flex-shrink-0 h-6 w-6"
+						fill="none"
+						viewBox="0 0 24 24"
+						><path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+						/></svg
+					>
+					<span>Bird saved in databse succesfully!</span>
+				</div>
+			</div>
+		{/if}
 	{/if}
 </div>
