@@ -80,7 +80,7 @@
 	}
 
 	async function logData() {
-		const response = await fetch('/auto', {
+		const response = await fetch('https://bird-ml-server.vercel.app/api/logging', {
 			method: 'POST',
 			body: prediction,
 			headers: {
