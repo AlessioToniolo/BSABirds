@@ -127,7 +127,7 @@
 		{/if}
 		{#if showCamera}
 			<div class="card w-96 bg-base-100 shadow-xl">
-				<figure><img src="hundredpicture.jpg" alt="Shoes" /></figure>
+				<figure><img src="/hundredpicture.jpg" alt="Shoes" /></figure>
 				<div class="card-body">
 					<h2 class="card-title">Identify Bird Species</h2>
 					<p class="text-left">
