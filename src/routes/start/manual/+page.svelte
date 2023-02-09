@@ -13,6 +13,8 @@
 	let searchValue = 'car'; // TODO for testing purposes only
 	let showResults = false;
 	let showChoice = false;
+	let showSuccess = false;
+	let showDropdown = true;
 	let searchResults = [];
 	let speciesName = '';
 
@@ -42,8 +44,28 @@
 		showChoice = true;
 	}
 
-	function logData() {
-		console.log('updated to supabase');
+	async function logData() {
+		const response = await fetch('https://bird-ml-server.vercel.app/api/logging', {
+			method: 'POST',
+			body: speciesName,
+			headers: {
+				'content-type': 'text/plain',
+				accept: 'text/plain'
+			}
+		}).then((res) => {
+			console.log(res.json());
+		});
+
+		clearScreen();
+	}
+
+	// Helper function
+	function clearScreen() {
+		showResults = false;
+		showChoice = false;
+		showSearchBar = false;
+		showSuccess = true;
+		showDropdown = false;
 	}
 
 	// TODO for testing purposes only
@@ -100,6 +122,7 @@
 			<div class="card w-96 bg-secondary">
 				<div class="card-body items-center text-center">
 					<h2 class="card-title">Selected Species:</h2>
+					<p><b>{speciesName}</b></p>
 					<div class="mt-2 space-x-1 card-actions justify-end">
 						<button on:click={logData} class="btn btn-primary">Log Bird</button>
 					</div>
@@ -107,7 +130,7 @@
 			</div>
 		</div>
 	{/if}
-{:else}
+{:else if showDropdown}
 	<div class="form-control w-full max-w-xs">
 		<label class="label">
 			<span class="label-text">Pick the best fantasy franchise</span>
@@ -124,5 +147,25 @@
 				></a
 			>
 		</label>
+	</div>
+{/if}
+
+{#if showSuccess}
+	<div class="alert alert-success shadow-lg">
+		<div>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				class="stroke-current flex-shrink-0 h-6 w-6"
+				fill="none"
+				viewBox="0 0 24 24"
+				><path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="2"
+					d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+				/></svg
+			>
+			<span>Successfully logged, thank you for your contribution!</span>
+		</div>
 	</div>
 {/if}
