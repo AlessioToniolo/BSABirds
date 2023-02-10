@@ -1,8 +1,8 @@
 <script>
 	export let records;
-	import { Bar } from 'svelte-chartjs';
-	import { Chart, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js';
-	Chart.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
+	import { Pie } from 'svelte-chartjs';
+	import { Chart, Title, Tooltip, Legend, ArcElement, CategoryScale } from 'chart.js';
+	Chart.register(Title, Tooltip, Legend, ArcElement, CategoryScale);
 	// Import onmount from svelte
 	import { onMount } from 'svelte';
 
@@ -33,8 +33,7 @@
 					label: 'Total Recorded Sightings',
 					data: counts,
 					backgroundColor: backgroundColors,
-					borderWidth: 2,
-					borderColor: borderColors
+					hoverBackgroundColor: borderColors
 				}
 			]
 		};
@@ -46,6 +45,6 @@
 	<h1>Loading...</h1>
 {:else}
 	<div class="mt-12">
-		<Bar {data} options={{ responsive: true }} />
+		<Pie {data} options={{ responsive: true }} />
 	</div>
 {/if}

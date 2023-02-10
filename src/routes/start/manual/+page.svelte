@@ -10,7 +10,7 @@
 	}
 
 	// Search for a bird species
-	let searchValue = 'car'; // TODO for testing purposes only
+	let searchValue = '';
 	let showResults = false;
 	let showChoice = false;
 	let showSuccess = false;
@@ -132,9 +132,6 @@
 	{/if}
 {:else if showDropdown}
 	<div class="form-control w-full max-w-xs">
-		<label class="label">
-			<span class="label-text">Pick the best fantasy franchise</span>
-		</label>
 		<select class="select select-bordered">
 			<option disabled selected>Pick one</option>
 			{#each data.records as record}
