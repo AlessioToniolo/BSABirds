@@ -72,83 +72,8 @@
 	searchForBird();
 </script>
 
-{#if showSearchBar}
-	<div class="mx-auto mt-5 form-control w-full max-w-xs">
-		<label class="label">
-			<span class="label-text">Search for a bird species to submit</span>
-			<!--<span class="label-text-alt">Or use a dropdown menu</span>-->
-		</label>
-		<input
-			bind:value={searchValue}
-			on:input={searchForBird}
-			type="text"
-			placeholder="Type here"
-			class="input input-bordered w-full max-w-xs"
-		/>
-		<label class="label">
-			<a on:click={switchSearch}
-				><span class="text-primary hover:text-gray-900 label-text-alt">Use a dropdown instead</span
-				></a
-			>
-		</label>
-	</div>
-
-	{#if showResults}
-		<div class="overflow-x-auto mx-auto max-w-xs mt-2">
-			<table class="table table-compact table-zebra w-full">
-				<!-- head -->
-				<thead>
-					<tr>
-						<th>Bird Species</th>
-					</tr>
-				</thead>
-				<tbody>
-					{#each searchResults as result}
-						<tr>
-							<td on:click={logBird(result[0])}
-								><div class="flex justify-between">
-									{result[0]} <button class="btn btn-xs btn-outline btn-primary">Select</button>
-								</div></td
-							>
-						</tr>
-					{/each}
-				</tbody>
-			</table>
-		</div>
-	{/if}
-
-	{#if showChoice}
-		<div class="text-center justify-center ml-auto mr-auto mt-8 card w-96 bg-base-100 shadow-xl">
-			<div class="card w-96 bg-secondary">
-				<div class="card-body items-center text-center">
-					<h2 class="card-title">Selected Species:</h2>
-					<p><b>{speciesName}</b></p>
-					<div class="mt-2 space-x-1 card-actions justify-end">
-						<button on:click={logData} class="btn btn-primary">Log Bird</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	{/if}
-{:else if showDropdown}
-	<div class="form-control w-full max-w-xs">
-		<select class="select select-bordered">
-			<option disabled selected>Pick one</option>
-			{#each data.records as record}
-				<option value={record[0]}>{record[0]}</option>
-			{/each}
-		</select>
-		<label class="label">
-			<a on:click={switchSearch}
-				><span class="text-primary hover:text-gray-900 label-text-alt">Use a search instead</span
-				></a
-			>
-		</label>
-	</div>
-{/if}
-
 {#if showSuccess}
-	<div class="alert alert-success shadow-lg">
+	<div class="mx-auto alert alert-success max-w-xs sm:max-w-md shadow-lg">
 		<div>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
@@ -164,5 +89,91 @@
 			>
 			<span>Successfully logged, thank you for your contribution!</span>
 		</div>
+	</div>
+{:else}
+	<div class="container my-8 py-6 card bg-slate-100 max-w-sm">
+		{#if showSearchBar}
+			<div class="mx-auto form-control w-xs">
+				<span class="label">
+					<span class="label-text">Search for a bird species to submit</span>
+				</span>
+				<input
+					bind:value={searchValue}
+					on:input={searchForBird}
+					type="text"
+					placeholder="Type here"
+					class="input input-bordered w-full max-w-xs"
+				/>
+				<span class="label">
+					<div on:click={switchSearch}>
+						<span class="text-primary hover:text-gray-900 label-text-alt"
+							>Use a dropdown instead</span
+						>
+					</div>
+				</span>
+			</div>
+
+			{#if showResults}
+				<div class="mx-auto mt-2">
+					<table class="table table-compact table-zebra">
+						<!-- head -->
+						<thead>
+							<tr>
+								<th>Bird Species</th>
+							</tr>
+						</thead>
+						<tbody>
+							{#each searchResults as result}
+								<tr>
+									<td
+										><div class="flex justify-between">
+											<p>{result[0]}</p>
+											<div class="pl-6">
+												<button
+													on:click={logBird(result[0])}
+													class="btn btn-xs btn-outline btn-primary">Select</button
+												>
+											</div>
+										</div></td
+									>
+								</tr>
+							{/each}
+						</tbody>
+					</table>
+				</div>
+			{/if}
+
+			{#if showChoice}
+				<div class="text-center justify-center px-8 mt-8">
+					<div class="card bg-secondary">
+						<div class="card-body items-center text-center">
+							<h2 class="card-title">Selected Species:</h2>
+							<p><b>{speciesName}</b></p>
+							<div class="mt-2 space-x-1 card-actions justify-end">
+								<button on:click={logData} class="btn btn-primary">Log Bird</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			{/if}
+		{:else if showDropdown}
+			<div class="mx-auto w-xs form-control">
+				<select class="select select-bordered">
+					<option disabled selected>Pick one</option>
+					{#each data.records as record}
+						<div on:click={logBird(record[0])}>
+							<option value={record[0]}>{record[0]}</option>
+						</div>
+					{/each}
+				</select>
+				<div class="label">
+					<a on:click={switchSearch}
+						><span class="text-primary hover:text-gray-900 label-text-alt"
+							>Use a search instead</span
+						></a
+					>
+				</div>
+			</div>
+		{/if}
 	</div>
 {/if}
