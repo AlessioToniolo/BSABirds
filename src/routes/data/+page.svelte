@@ -1,6 +1,6 @@
 <script>
 	/** @type {import('./$types').PageData} */
-	export let info;
+	export let data;
 	import Bar from '../../components/Bar.svelte';
 	import Pie from '../../components/Pie.svelte';
 	// Import papaparse
@@ -8,7 +8,6 @@
 	// Import onmount from svelte
 	import { onMount } from 'svelte';
 	let showCard = true;
-
 	/**
 	 * @type {string | any[]}
 	 */
@@ -22,25 +21,34 @@
 			}
 		}).then((res) => {
 			res.json().then((input) => {
-				// Organize the data into different objects that have a name property and a count property, then push them into the data array
+				// Organize the metrics into different objects that have a name property and a count property, then push them into the metrics array
+				csvData.push(['ID', 'Date', 'Bird Species']);
 				input.forEach((e) => {
-					// Push raw data into csvData array
-					csvData.push([e.id, e.created_at, e.bird_species]);
-				});
+					// Create another string that is the date in US format with am or pm
+					const dateFormat = new Date(e.created_at);
+					const another = dateFormat.toLocaleString('en-US', {
+						hour: 'numeric',
+						minute: 'numeric',
+						hour12: true
+					});
+					const out = `${
+						dateFormat.getMonth() + 1
+					}/${dateFormat.getDate()}/${dateFormat.getFullYear()}, ${another}`;
 
-				// TODO test download the data
+					csvData.push([e.id, out, e.bird_species]);
+				});
+				// TODO test download the metrics
 				const csv = Papa.unparse(csvData);
 				var dat = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
 				var csvURL = null;
 				if (navigator.msSaveBlob) {
-					csvURL = navigator.msSaveBlob(dat, 'download.csv');
+					csvURL = navigator.msSaveBlob(dat, 'Brookhaven_Bird_Data.csv');
 				} else {
 					csvURL = window.URL.createObjectURL(dat);
 				}
-
 				var tempLink = document.createElement('a');
 				tempLink.href = csvURL;
-				tempLink.setAttribute('download', 'download.csv');
+				tempLink.setAttribute('download', 'Brookhaven_Bird_Data.csv');
 				tempLink.click();
 			});
 		});
@@ -50,7 +58,7 @@
 	/**
 	 * @type {string | any[]}
 	 */
-	let data = [];
+	let metrics = [];
 	async function getData() {
 		const response = await fetch('http://localhost:8080/api/graphing', {
 			method: 'POST',
@@ -60,20 +68,19 @@
 			}
 		}).then((res) => {
 			res.json().then((input) => {
-				// Organize the data into different objects that have a name property and a count property, then push them into the data array
+				// Organize the metrics into different objects that have a name property and a count property, then push them into the metrics array
 				input.forEach((e) => {
 					const species = e.bird_species;
-					for (let i = 0; i < data.length; i++) {
-						if (data[i].name === species) {
-							data[i].count++;
+					for (let i = 0; i < metrics.length; i++) {
+						if (metrics[i].name === species) {
+							metrics[i].count++;
 							return;
 						}
 					}
-					data.push({ name: species, count: 1 });
+					metrics.push({ name: species, count: 1 });
 				});
-
-				// Sort the data array alphabetically
-				data.sort((a, b) => {
+				// Sort the metrics array alphabetically
+				metrics.sort((a, b) => {
 					if (a.name < b.name) {
 						return -1;
 					}
@@ -85,18 +92,57 @@
 			});
 		});
 	}
-
-	onMount(() => {
-		getData();
+	onMount(async () => {
+		await getData();
 	});
 
 	function viewData() {
 		showCard = false;
 	}
+
+	// SEARCHING CODE
+	let searchValue = '';
+	let showResults = false;
+	let searchResults = [];
+	let showSingleResult = false;
+	let miniData = [];
+
+	function searchForBird() {
+		const query = searchValue.toUpperCase();
+
+		if (query.length < 1) {
+			showResults = false;
+		} else {
+			showResults = true;
+		}
+
+		// Filter the metrics
+		searchResults = data.records.filter((record) => {
+			return record[0].toUpperCase().includes(query);
+		});
+
+		const cutoff = 5;
+
+		if (searchResults.length > cutoff) {
+			searchResults = searchResults.slice(0, cutoff);
+		}
+	}
+
+	function queriedBird(selectedText) {
+		searchValue = selectedText;
+		showSingleResult = true;
+		showResults = false;
+		// Finds the bird in the metrics array and pushes it into the miniData array
+		metrics.forEach((e) => {
+			if (e.name === selectedText) {
+				miniData.push(e);
+			}
+		});
+	}
 </script>
 
 {#if showCard}
-	<div class="mx-auto mt-12 card w-96 bg-base-100 shadow-xl">
+	<div class="mx-auto card w-80 sm:w-96 bg-base-100 shadow-xl">
 		<figure>
 			<img src="graph-bird.jpeg" alt="White Little Bird" />
 		</figure>
@@ -111,23 +157,33 @@
 			</div>
 		</div>
 	</div>
-{/if}
-
-{#if !showCard}
-	<div class="mt-5 navbar bg-base-200 rounded-2xl">
-		<div class="flex-1">
-			<a class="btn btn-ghost normal-case text-xl">Reset Charts</a>
-		</div>
-		<div class="flex-none gap-2">
-			<div class="form-control">
-				<input type="text" placeholder="Search" class="input input-bordered" />
-			</div>
+{:else}
+	<div class="flex justify-center p-4 bg-base-200 rounded-2xl">
+		<div class="dropdown">
+			<label tabindex="0"
+				><input
+					bind:value={searchValue}
+					on:input={searchForBird}
+					type="text"
+					placeholder="Search"
+					class="input input-bordered"
+				/></label
+			>
+			{#if showResults}
+				<ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+					{#each searchResults as result}
+						<li on:click={queriedBird(result[0])}>
+							<a>{result[0]}</a>
+						</li>
+					{/each}
+				</ul>
+			{/if}
 		</div>
 	</div>
 
-	<Bar records={data} />
-	<div class="divider" />
-	<div class="w-1/2 mx-auto pb-12">
-		<Pie records={data} />
-	</div>
+	{#if showSingleResult}
+		<Bar records={miniData} />
+	{:else}
+		<Bar records={metrics} />
+	{/if}
 {/if}
