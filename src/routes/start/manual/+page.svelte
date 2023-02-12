@@ -16,7 +16,7 @@
 	let showSuccess = false;
 	let showDropdown = true;
 	let searchResults = [];
-	let speciesName = '';
+	let speciesName;
 
 	function searchForBird() {
 		const query = searchValue.toUpperCase();
@@ -91,7 +91,7 @@
 		</div>
 	</div>
 {:else}
-	<div class="container my-8 py-6 card bg-slate-100 max-w-sm">
+	<div class="container my-8 py-6 card rounded-none sm:card bg-slate-100 max-w-sm">
 		{#if showSearchBar}
 			<div class="mx-auto form-control w-xs">
 				<span class="label">
@@ -157,22 +157,27 @@
 				</div>
 			{/if}
 		{:else if showDropdown}
-			<div class="mx-auto w-xs form-control">
-				<select class="select select-bordered">
-					<option disabled selected>Pick one</option>
-					{#each data.records as record}
-						<div on:click={logBird(record[0])}>
-							<option value={record[0]}>{record[0]}</option>
+			<div class="form-control">
+				<form class="flex justify-center space-x-4" on:submit|preventDefault={logData}>
+					<div>
+						<select bind:value={speciesName} class="w-64 select select-bordered">
+							<option disabled selected>Pick one</option>
+							{#each data.records as record}
+								<option value={record[0]}>{record[0]}</option>
+							{/each}
+						</select>
+						<div class="label">
+							<a on:click={switchSearch}
+								><span class="text-primary hover:text-gray-900 label-text-alt"
+									>Use a search instead</span
+								></a
+							>
 						</div>
-					{/each}
-				</select>
-				<div class="label">
-					<a on:click={switchSearch}
-						><span class="text-primary hover:text-gray-900 label-text-alt"
-							>Use a search instead</span
-						></a
-					>
-				</div>
+					</div>
+					<button class="mx-auto btn btn-secondary" disabled={!speciesName} type="submit">
+						Submit
+					</button>
+				</form>
 			</div>
 		{/if}
 	</div>
