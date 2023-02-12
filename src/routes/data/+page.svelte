@@ -3,10 +3,12 @@
 	export let data;
 	import Bar from '../../components/Bar.svelte';
 	import Pie from '../../components/Pie.svelte';
+	import HorizontalBar from '../../components/HorizontalBar.svelte';
 	// Import papaparse
 	import Papa from 'papaparse';
 	// Import onmount from svelte
 	import { onMount } from 'svelte';
+	import Line from '../../components/Line.svelte';
 	let showCard = true;
 	/**
 	 * @type {string | any[]}
@@ -71,13 +73,17 @@
 				// Organize the metrics into different objects that have a name property and a count property, then push them into the metrics array
 				input.forEach((e) => {
 					const species = e.bird_species;
+
+					// Converts the timestamptz to a date object
+					const dateFormat = new Date(e.created_at);
+
 					for (let i = 0; i < metrics.length; i++) {
 						if (metrics[i].name === species) {
 							metrics[i].count++;
 							return;
 						}
 					}
-					metrics.push({ name: species, count: 1 });
+					metrics.push({ name: species, date: dateFormat, count: 1 });
 				});
 				// Sort the metrics array alphabetically
 				metrics.sort((a, b) => {
@@ -92,8 +98,55 @@
 			});
 		});
 	}
+
+	let lineMetrics = [];
+	async function getLineData() {
+		const response = await fetch('http://localhost:8080/api/graphing', {
+			method: 'POST',
+			headers: {
+				'content-type': 'text/plain',
+				accept: 'text/plain'
+			}
+		}).then((res) => {
+			// Create buckets for each bird species containing the date and bird species
+			// Each bucket will have a date property with an array of all the dates that species was seen
+			res.json().then((input) => {
+				input.forEach((e) => {
+					const species = e.bird_species;
+					const dateFormat = new Date(e.created_at);
+
+					for (let i = 0; i < lineMetrics.length; i++) {
+						if (lineMetrics[i].name === species) {
+							lineMetrics[i].date.push(dateFormat);
+							return;
+						}
+					}
+
+					lineMetrics.push({ name: species, date: [dateFormat] });
+				});
+
+				// Sort the metrics array alphabetically
+				lineMetrics.sort((a, b) => {
+					if (a.name < b.name) {
+						return -1;
+					}
+					if (a.name > b.name) {
+						return 1;
+					}
+					return 0;
+				});
+
+				// Loop through line metrics and print each element
+				lineMetrics.forEach((e) => {
+					console.log(e);
+				});
+			});
+		});
+	}
+
 	onMount(async () => {
 		await getData();
+		await getLineData();
 	});
 
 	function viewData() {
@@ -105,6 +158,9 @@
 	let showResults = false;
 	let searchResults = [];
 	let showSingleResult = false;
+	/**
+	 * @type {any[]}
+	 */
 	let miniData = [];
 
 	function searchForBird() {
@@ -132,10 +188,10 @@
 		searchValue = selectedText;
 		showSingleResult = true;
 		showResults = false;
-		// Finds the bird in the metrics array and pushes it into the miniData array
-		metrics.forEach((e) => {
+		// Finds the bird in the lineMetrics array and pushes it into the miniData array
+		lineMetrics.forEach((e) => {
 			if (e.name === selectedText) {
-				miniData.push(e);
+				miniData = [e];
 			}
 		});
 	}
@@ -158,14 +214,14 @@
 		</div>
 	</div>
 {:else}
-	<div class="flex justify-center p-4 bg-base-200 rounded-2xl">
+	<div class="mx-4 flex justify-center p-4 bg-base-200 rounded-2xl">
 		<div class="dropdown">
 			<label tabindex="0"
 				><input
 					bind:value={searchValue}
 					on:input={searchForBird}
 					type="text"
-					placeholder="Search"
+					placeholder="Search by Bird"
 					class="input input-bordered"
 				/></label
 			>
@@ -182,8 +238,15 @@
 	</div>
 
 	{#if showSingleResult}
-		<Bar records={miniData} />
+		{#key miniData}
+			<div class="px-4 sm:px-8">
+				<Line records={miniData} />
+			</div>
+		{/key}
 	{:else}
-		<Bar records={metrics} />
+		<div class="px-4 sm:px-8">
+			<div class="hidden md:contents"><Bar records={metrics} /></div>
+			<div class="contents md:hidden"><HorizontalBar records={metrics} /></div>
+		</div>
 	{/if}
 {/if}
