@@ -21,39 +21,46 @@
 				'content-type': 'text/plain',
 				accept: 'text/plain'
 			}
-		}).then((res) => {
-			res.json().then((input) => {
-				// Organize the metrics into different objects that have a name property and a count property, then push them into the metrics array
-				csvData.push(['ID', 'Date', 'Bird Species']);
-				input.forEach((e) => {
-					// Create another string that is the date in US format with am or pm
-					const dateFormat = new Date(e.created_at);
-					const another = dateFormat.toLocaleString('en-US', {
-						hour: 'numeric',
-						minute: 'numeric',
-						hour12: true
-					});
-					const out = `${
-						dateFormat.getMonth() + 1
-					}/${dateFormat.getDate()}/${dateFormat.getFullYear()}, ${another}`;
+		})
+			.catch(
+				(err) => {
+					console.log(err);
+				},
+				[onMount]
+			)
+			.then((res) => {
+				res.json().then((input) => {
+					// Organize the metrics into different objects that have a name property and a count property, then push them into the metrics array
+					csvData.push(['ID', 'Date', 'Bird Species']);
+					input.forEach((e) => {
+						// Create another string that is the date in US format with am or pm
+						const dateFormat = new Date(e.created_at);
+						const another = dateFormat.toLocaleString('en-US', {
+							hour: 'numeric',
+							minute: 'numeric',
+							hour12: true
+						});
+						const out = `${
+							dateFormat.getMonth() + 1
+						}/${dateFormat.getDate()}/${dateFormat.getFullYear()}, ${another}`;
 
-					csvData.push([e.id, out, e.bird_species]);
+						csvData.push([e.id, out, e.bird_species]);
+					});
+					// TODO test download the metrics
+					const csv = Papa.unparse(csvData);
+					var dat = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+					var csvURL = null;
+					if (navigator.msSaveBlob) {
+						csvURL = navigator.msSaveBlob(dat, 'Brookhaven_Bird_Data.csv');
+					} else {
+						csvURL = window.URL.createObjectURL(dat);
+					}
+					var tempLink = document.createElement('a');
+					tempLink.href = csvURL;
+					tempLink.setAttribute('download', 'Brookhaven_Bird_Data.csv');
+					tempLink.click();
 				});
-				// TODO test download the metrics
-				const csv = Papa.unparse(csvData);
-				var dat = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-				var csvURL = null;
-				if (navigator.msSaveBlob) {
-					csvURL = navigator.msSaveBlob(dat, 'Brookhaven_Bird_Data.csv');
-				} else {
-					csvURL = window.URL.createObjectURL(dat);
-				}
-				var tempLink = document.createElement('a');
-				tempLink.href = csvURL;
-				tempLink.setAttribute('download', 'Brookhaven_Bird_Data.csv');
-				tempLink.click();
 			});
-		});
 	}
 
 	// Declare a type as an array of string arrays
