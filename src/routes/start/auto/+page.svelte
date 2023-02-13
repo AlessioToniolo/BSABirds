@@ -49,7 +49,7 @@
 	async function predictWebcam() {
 		showPredictButton = false;
 		secondLoading = true;
-		tf.loadLayersModel('https://bird-ml-server.vercel.app/api/model.json').then((loadedModel) => {
+		tf.loadLayersModel('http://bird-ml-server.vercel.app/api/model.json').then((loadedModel) => {
 			model = loadedModel;
 			model.summary();
 			const predictionData = model.predict(image);
@@ -63,7 +63,7 @@
 					}
 				}
 				accuracy = Math.round(max * 100);
-				papaparse.parse('https://bird-ml-server.vercel.app/api/listOfBirdSpecies.csv', {
+				papaparse.parse('http://bird-ml-server.vercel.app/api/listOfBirdSpecies.csv', {
 					download: true,
 					complete: (results) => {
 						prediction = results.data[maxIndex][0];
@@ -76,7 +76,7 @@
 	}
 
 	async function logData() {
-		const response = await fetch('https://bird-ml-server.vercel.app/api/logging', {
+		const response = await fetch('http://bird-ml-server.vercel.app/api/logging', {
 			method: 'POST',
 			body: prediction,
 			headers: {

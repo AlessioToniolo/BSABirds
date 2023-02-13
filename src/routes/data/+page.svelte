@@ -15,7 +15,7 @@
 	 */
 	let csvData = [];
 	async function getCSVData() {
-		const response = await fetch('https://bird-ml-server.vercel.app/api/graphing', {
+		const response = await fetch('http://bird-ml-server.vercel.app/api/graphing', {
 			method: 'POST',
 			headers: {
 				'content-type': 'text/plain',
@@ -62,7 +62,7 @@
 	 */
 	let metrics = [];
 	async function getData() {
-		const response = await fetch('https://bird-ml-server.vercel.app/api/graphing', {
+		const response = await fetch('http://bird-ml-server.vercel.app/api/graphing', {
 			method: 'POST',
 			headers: {
 				'content-type': 'text/plain',
@@ -101,7 +101,7 @@
 
 	let lineMetrics = [];
 	async function getLineData() {
-		const response = await fetch('https://bird-ml-server.vercel.app/api/graphing', {
+		const response = await fetch('http://bird-ml-server.vercel.app/api/graphing', {
 			method: 'POST',
 			headers: {
 				'content-type': 'text/plain',
