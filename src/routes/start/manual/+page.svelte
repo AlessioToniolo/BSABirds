@@ -52,8 +52,6 @@
 				'content-type': 'text/plain',
 				accept: 'text/plain'
 			}
-		}).then((res) => {
-			console.log(res.json());
 		});
 
 		clearScreen();

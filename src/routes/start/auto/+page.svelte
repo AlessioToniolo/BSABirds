@@ -21,19 +21,15 @@
 
 	const obtainVideoCamera = async () => {
 		showVideoSource = true;
-		try {
-			showCamera = false;
-			loading = true;
-			const stream = await navigator.mediaDevices.getUserMedia({
-				video: true
-			});
-			videoSource.srcObject = stream;
-			videoSource.play();
-			loading = false;
-			showTakePictureButton = true;
-		} catch (error) {
-			console.log(error);
-		}
+		showCamera = false;
+		loading = true;
+		const stream = await navigator.mediaDevices.getUserMedia({
+			video: true
+		});
+		videoSource.srcObject = stream;
+		videoSource.play();
+		loading = false;
+		showTakePictureButton = true;
 	};
 
 	async function loadImage() {
@@ -87,8 +83,6 @@
 				'content-type': 'text/plain',
 				accept: 'text/plain'
 			}
-		}).then((res) => {
-			console.log(res.json());
 		});
 
 		clearScreen();

@@ -135,12 +135,6 @@
 					}
 					return 0;
 				});
-
-				// Loop through line metrics and print each element
-				lineMetrics.forEach((e) => {
-					console.log(e);
-				});
-			});
 		});
 	}
 
