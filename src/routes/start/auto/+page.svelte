@@ -37,9 +37,9 @@
 	};
 
 	async function loadImage() {
-		showCanvasSource = true;
 		loading = true;
 		const camera = await tf.data.webcam(videoSource);
+		showCanvasSource = true;
 		image = await camera.capture();
 		showTakePictureButton = false;
 		showCamera = false;
@@ -107,70 +107,71 @@
 	}
 </script>
 
-<div class="text-center flex flex-wrap justify-center p-12 sm:p-0">
-	{#if loading}
-		<div class="alert alert-warning shadow-lg">
-			<div>
-				<strong>LOADING...</strong>
-			</div>
-		</div>
-	{/if}
-	<!-- svelte-ignore a11y-media-has-caption -->
-	{#if showVideoSource}
-		<video bind:this={videoSource} />
-	{/if}
-	{#if showCanvasSource}
-		<canvas bind:this={imageCanvas} />
-	{/if}
-	{#if showCamera}
-		<div class="card w-96 bg-base-100 shadow-xl">
-			<figure><img src="/hundredpicture.jpg" alt="Shoes" /></figure>
-			<div class="card-body">
-				<h2 class="card-title">Identify Bird Species</h2>
-				<p class="text-left">
-					BSABirds will automatically identify a bird picture taken on your camera!
-				</p>
-				<div class="card-actions justify-center pt-2">
-					<button class="btn-primary btn" on:click={obtainVideoCamera}>Turn on Camera</button>
+<div class="text-center flex justify-center mx-6">
+	<div class="mx-auto max-w-xs sm:max-w-sm md:max-w-md">
+		{#if loading}
+			<div class="alert alert-warning shadow-lg">
+				<div>
+					<strong>LOADING...</strong>
 				</div>
 			</div>
+		{/if}
+		<div class="">
+			{#if showVideoSource}
+				<video bind:this={videoSource} />
+			{/if}
+			{#if showCanvasSource}
+				<canvas class="max-w-xs sm:max-w-sm md:max-w-md" bind:this={imageCanvas} />
+			{/if}
 		</div>
-	{/if}
+		{#if showTakePictureButton}
+			<button class="btn mt-6" on:click={loadImage}>Take a picture</button>
+		{/if}
+		{#if showPredictButton}
+			<button class="btn btn-primary mt-6" on:click={predictWebcam}>Predict Bird</button>
+		{/if}
+		{#if secondLoading}
+			<div class=" alert alert-warning shadow-lg mt-6">
+				<div>
+					<strong>LOADING...</strong>
+				</div>
+			</div>
+		{/if}
+	</div>
 </div>
-<div>
-	{#if showTakePictureButton}
-		<button class="btn mt-2" on:click={loadImage}>Take a picture</button>
-	{/if}
-	{#if showPredictButton}
-		<button class="btn btn-primary mt-2" on:click={predictWebcam}>Predict Bird</button>
-	{/if}
-	{#if secondLoading}
-		<div class="mt-12 alert alert-warning shadow-lg">
-			<div>
-				<strong>LOADING...</strong>
+{#if showCamera}
+	<div class="container my-auto card w-80 sm:w-96 bg-base-100 shadow-xl">
+		<figure><img src="/hundredpicture.jpg" alt="Shoes" /></figure>
+		<div class="card-body">
+			<h2 class="card-title">Identify Bird Species</h2>
+			<p class="text-left">
+				BSABirds will automatically identify a bird picture taken on your camera!
+			</p>
+			<div class="card-actions justify-center pt-2">
+				<button class="btn-primary btn" on:click={obtainVideoCamera}>Turn on Camera</button>
 			</div>
 		</div>
-	{/if}
-</div>
+	</div>
+{/if}
 {#if showDetection}
-	<div class="text-center justify-center ml-auto mr-auto mt-8 card w-96 bg-base-100 shadow-xl">
-		<div class="card w-96 bg-secondary">
-			<div class="card-body items-center text-center">
-				<h2 class="card-title">Bird Species:</h2>
-				<p><b>{prediction}</b> with {accuracy}% certainty!</p>
-				<div class="mt-2 space-x-1 card-actions justify-end">
-					<button on:click={logData} class="btn btn-primary">Log Bird</button>
-					<a href="/">
-						<button class="btn btn-neutral">Try Again</button>
-					</a>
-				</div>
+	<div
+		class=" mt-6 bg-secondary text-center justify-center ml-auto mr-auto card w-80 sm:w-96 bg-base-100 shadow-xl"
+	>
+		<div class="card-body items-center text-center">
+			<h2 class="card-title">Bird Species:</h2>
+			<p><b>{prediction}</b> with {accuracy}% certainty!</p>
+			<div class="mt-2 space-x-1 card-actions justify-end">
+				<button on:click={logData} class="btn btn-primary">Log Bird</button>
+				<a data-sveltekit-reload href="/start/auto">
+					<button class="btn btn-neutral">Try Again</button>
+				</a>
 			</div>
 		</div>
 	</div>
 {/if}
 {#if showResult}
 	{#if error}
-		<div class="alert alert-error shadow-lg">
+		<div class="max-w-sm mx-6 alert alert-error shadow-lg">
 			<div>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
@@ -188,7 +189,7 @@
 			</div>
 		</div>
 	{:else}
-		<div class="alert alert-success shadow-lg">
+		<div class="max-w-xs sm:max-w-sm mx-auto alert alert-success shadow-lg">
 			<div>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"

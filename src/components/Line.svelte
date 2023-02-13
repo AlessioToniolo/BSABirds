@@ -5,6 +5,8 @@
 	export let records;
 	import { Line } from 'svelte-chartjs';
 
+	let noData = false;
+
 	import {
 		Chart as ChartJS,
 		Title,
@@ -23,7 +25,7 @@
 	let data = {};
 	let loading = true;
 	onMount(() => {
-		const labels = ['Up To Two Years Ago', 'One Year Ago', 'This Year'];
+		const labels = ['Before 2 Years Ago', '1 Year Ago', 'This Year'];
 		/**
 		 * @type {{ label: any; data: never[]; backgroundColor: string; borderColor: string; }[]}
 		 */
@@ -78,6 +80,8 @@
 			datasets.push(out);
 		});
 
+		if (datasets.length === 0) noData = true;
+
 		data = {
 			labels: labels,
 			datasets: datasets
@@ -100,7 +104,25 @@
 	};
 </script>
 
-{#if loading}
+{#if noData}
+	<div class="mt-6 max-w-xs sm:max-w-sm md:max-w-md mx-auto alert alert-info shadow-lg">
+		<div>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				fill="none"
+				viewBox="0 0 24 24"
+				class="stroke-current flex-shrink-0 w-6 h-6"
+				><path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="2"
+					d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+				/></svg
+			>
+			<span>No Avaliable Data</span>
+		</div>
+	</div>
+{:else if loading}
 	<h1>Loading...</h1>
 {:else}
 	<div class="mt-12">

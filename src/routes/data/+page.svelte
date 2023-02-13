@@ -15,7 +15,7 @@
 	 */
 	let csvData = [];
 	async function getCSVData() {
-		const response = await fetch('http://localhost:8080/api/graphing', {
+		const response = await fetch('https://bird-ml-server.vercel.app/api/graphing', {
 			method: 'POST',
 			headers: {
 				'content-type': 'text/plain',
@@ -62,7 +62,7 @@
 	 */
 	let metrics = [];
 	async function getData() {
-		const response = await fetch('http://localhost:8080/api/graphing', {
+		const response = await fetch('https://bird-ml-server.vercel.app/api/graphing', {
 			method: 'POST',
 			headers: {
 				'content-type': 'text/plain',
@@ -101,7 +101,7 @@
 
 	let lineMetrics = [];
 	async function getLineData() {
-		const response = await fetch('http://localhost:8080/api/graphing', {
+		const response = await fetch('https://bird-ml-server.vercel.app/api/graphing', {
 			method: 'POST',
 			headers: {
 				'content-type': 'text/plain',
@@ -195,10 +195,16 @@
 			}
 		});
 	}
+
+	function clearData() {
+		showSingleResult = false;
+		miniData = [];
+		searchValue = '';
+	}
 </script>
 
 {#if showCard}
-	<div class="mx-auto card w-80 sm:w-96 bg-base-100 shadow-xl">
+	<div class="mx-auto my-6 card w-80 sm:w-96 bg-base-100 shadow-xl">
 		<figure>
 			<img src="graph-bird.jpeg" alt="White Little Bird" />
 		</figure>
@@ -234,6 +240,24 @@
 					{/each}
 				</ul>
 			{/if}
+		</div>
+
+		<div class="pl-4">
+			<button on:click={clearData} class="btn btn-circle btn-outline ">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					class="h-6 w-6"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
+					><path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M6 18L18 6M6 6l12 12"
+					/></svg
+				>
+			</button>
 		</div>
 	</div>
 
