@@ -45,7 +45,7 @@
 	}
 
 	async function logData() {
-		const response = await fetch('http://bird-ml-server.vercel.app/api/logging', {
+		const response = await fetch('https://bird-ml-server.vercel.app/api/logging', {
 			method: 'POST',
 			body: speciesName,
 			headers: {
