@@ -21,6 +21,8 @@
 	let prediction;
 	let accuracy;
 
+	let outImage = null;
+
 	const obtainVideoCamera = async () => {
 		showVideoSource = true;
 		showCamera = false;
@@ -38,17 +40,20 @@
 	};
 
 	async function loadImage() {
+		showCanvasSource = true;
 		loading = true;
 		const camera = await tf.data.webcam(videoSource);
-		showCanvasSource = true;
 		image = await camera.capture();
+		outImage = image;
 		showTakePictureButton = false;
 		showCamera = false;
 		showVideoSource = false;
-		await tf.browser.toPixels(image, imageCanvas);
+		console.log(image);
+		await tf.browser.toPixels(outImage, imageCanvas);
 		image = tf.expandDims(tf.image.resizeBilinear(image, [150, 150]).div(tf.scalar(255)), 0);
 		loading = false;
 		showPredictButton = true;
+		console.log(imageCanvas);
 	}
 
 	async function predictWebcam() {
@@ -115,12 +120,13 @@
 				</div>
 			</div>
 		{/if}
-		<div class="">
+		<div class="my-6">
 			{#if showVideoSource}
 				<video bind:this={videoSource} />
 			{/if}
 			{#if showCanvasSource}
-				<canvas class="max-w-xs sm:max-w-sm md:max-w-md" bind:this={imageCanvas} />
+				<!--class="max-w-xs sm:max-w-sm md:max-w-md" -->
+				<canvas bind:this={imageCanvas} />
 			{/if}
 		</div>
 		{#if showTakePictureButton}
@@ -170,7 +176,7 @@
 {/if}
 {#if showResult}
 	{#if error}
-		<div class="max-w-sm mx-6 alert alert-error shadow-lg">
+		<div class="max-w-xs sm:max-w-sm mx-auto alert alert-error shadow-lg">
 			<div>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
