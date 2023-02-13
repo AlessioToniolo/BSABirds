@@ -1,4 +1,4 @@
-<div class="navbar bg-neutral text-neutral-content">
+<div class="navbar bg-neutral text-neutral-content lg:rounded-xl lg:mt-8">
 	<div class="navbar-start">
 		<div class="dropdown">
 			<label tabindex="0" class="btn btn-ghost lg:hidden">

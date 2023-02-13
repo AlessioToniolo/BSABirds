@@ -1,11 +1,11 @@
 <div class="flex flex-wrap justify-center">
 	<div class="text-center">
 		<div class="sm:basis-1/2 text-center mb-5 pt-10 ">
-			<p class="text-primary font-extrabold text-3xl">Track Brookhaven Birds</p>
+			<p class="mx-4 text-primary font-extrabold text-3xl">Track Brookhaven Birds</p>
 		</div>
 		<div class="mb-10"><a href="/start" class="btn btn-primary">Get started</a></div>
 	</div>
-	<div class="container min-width-max x flex justify-center py-10">
+	<div class="container min-width-max x flex justify-center pt-8 pb-10">
 		<div class="card w-80 bg-base-100 shadow-xl">
 			<figure><img src="whitebird.jpeg" alt="White Bird" /></figure>
 			<div class="card-body">
