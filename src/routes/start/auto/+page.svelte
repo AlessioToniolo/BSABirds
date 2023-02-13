@@ -29,6 +29,7 @@
 			video: true
 		});
 		videoSource.srcObject = stream;
+		videoSource.setAttribute('playsinline', true);
 		videoSource.play();
 		loading = false;
 		showTakePictureButton = true;
@@ -136,7 +137,7 @@
 	</div>
 </div>
 {#if showCamera}
-	<div class="container my-auto card w-80 sm:w-96 bg-base-100 shadow-xl">
+	<div class="container my-8 card w-80 sm:w-96 bg-base-100 shadow-xl">
 		<figure><img src="/hundredpicture.jpg" alt="Shoes" /></figure>
 		<div class="card-body">
 			<h2 class="card-title">Identify Bird Species</h2>
