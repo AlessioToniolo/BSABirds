@@ -14,7 +14,7 @@
 	"devDependencies": {
 		"@fortawesome/free-solid-svg-icons": "^6.2.1",
 		"@sveltejs/adapter-auto": "next",
-		"@sveltejs/kit": "next",
+		"@sveltejs/kit": "^1.5.5",
 		"@tailwindcss/typography": "^0.5.8",
 		"@tensorflow/tfjs": "^4.1.0",
 		"autoprefixer": "^10.4.13",
