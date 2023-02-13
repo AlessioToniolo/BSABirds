@@ -26,9 +26,11 @@
 		showCamera = false;
 		loading = true;
 		const stream = await navigator.mediaDevices.getUserMedia({
-			video: true
+			video: { audio: false, facingMode: 'environment' }
 		});
 		videoSource.srcObject = stream;
+		videoSource.setAttribute('autoplay', '');
+		videoSource.setAttribute('muted', '');
 		videoSource.setAttribute('playsinline', true);
 		videoSource.play();
 		loading = false;
