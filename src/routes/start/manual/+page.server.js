@@ -1,6 +1,8 @@
 // @ts-nocheck
 import * as fs from 'fs';
  
+export const prerender = true;
+
 /** @type {import('./$types').PageLoad} */
 export function load() {
     const csv = fs.readFileSync('static/listOfBirdSpecies.csv', 'utf8');

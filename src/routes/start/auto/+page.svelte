@@ -2,6 +2,8 @@
 	import papaparse from 'papaparse';
 	import * as tf from '@tensorflow/tfjs';
 
+	export const prerender = true;
+
 	let showCamera = true;
 	let showDetection = false;
 	let showTakePictureButton = false;
