@@ -130,7 +130,7 @@
 			{/if}
 		</div>
 		{#if showTakePictureButton}
-			<button class="btn mt-6" on:click={loadImage}>Take a picture</button>
+			<button class="btn mb-6 mt-4" on:click={loadImage}>Take a picture</button>
 		{/if}
 		{#if showPredictButton}
 			<button class="btn btn-primary mt-6" on:click={predictWebcam}>Predict Bird</button>
