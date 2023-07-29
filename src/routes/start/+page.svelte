@@ -18,7 +18,9 @@
 		<figure><img src="https://picsum.photos/id/216/400/225" alt="Green Trail" /></figure>
 		<div class="card-body">
 			<h2 class="card-title">Auto</h2>
-			<p>AI detection of image using phone camera to detect bird species.</p>
+			<p>
+				AI detection of phone camera image to detect bird species. <em>Feature in Beta Testing</em>
+			</p>
 			<div class="card-actions justify-end">
 				<a href="/start/auto">
 					<button class="btn btn-outline">Choose</button>
