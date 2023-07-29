@@ -229,7 +229,7 @@
 					bind:value={searchValue}
 					on:input={searchForBird}
 					type="text"
-					placeholder="Search by Bird"
+					placeholder="Search Trends by Bird"
 					class="input input-bordered"
 				/></label
 			>
