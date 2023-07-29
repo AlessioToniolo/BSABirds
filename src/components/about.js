@@ -1,5 +1,5 @@
 export const md = `# About BSABirds
-BSABirds is an Eagle Scout project created by [Alessio Toniolo](https://github.com/AlessioToniolo) of Troop 74 in Atlanta, Georgia. The project aims to help the City of Brookhaven keep a track of the popultation counts of many different bird species in the area.
+BSABirds is an Eagle Scout project created by [Alessio Toniolo](https://linkedin.com/in/at6) of Troop 74 in Atlanta, Georgia. The project aims to help the City of Brookhaven keep a track of the popultation counts of many different bird species in the area.
     
 ## How It Works
 When someone visits a Brookhaven park, there will be a BSABirds yard sign or flyer on a bulletin board near the entrance/center of the park

@@ -12,8 +12,11 @@
 				<p class="card-title">About BSABirds</p>
 				<p>
 					<span class="font-semibold">BSABirds</span> provides data for bird species populations in
-					<a href="https://www.brookhavenga.gov/" class="underline hover:text-primary"
-						>Brookhaven, Georgia</a
+					<a
+						href="https://www.brookhavenga.gov/"
+						target="_blank"
+						rel="noreferrer"
+						class="underline hover:text-primary">Brookhaven, Georgia</a
 					> by recording sightings of birds in parks.
 				</p>
 				<div class="card-actions justify-end">

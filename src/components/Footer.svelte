@@ -3,7 +3,7 @@
 		<p class="text-lg">
 			An Eagle Scout Project by <a
 				class="underline hover:text-primary"
-				href="https://github.com/AlessioToniolo">Alessio Toniolo</a
+				href="https://linkedin.com/in/at6">Alessio Toniolo</a
 			>
 		</p>
 	</div>
